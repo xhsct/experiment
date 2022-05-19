@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".add_list"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"/>
+    <EditText
+        android:id="@+id/title_list"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textSize="20dp"
+        android:hint="标题编辑"/>
+    <EditText
+        android:id="@+id/content_list"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:textSize="20dp"
+        android:hint="详细内容编辑"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"/>
+    <LinearLayout
+        android:layout_marginTop="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <Button
+            android:layout_marginLeft="80dp"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:text="增加"
+            android:onClick="tianjia"/>
+        <Button
+            android:layout_marginLeft="100dp"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:text="取消"
+            android:onClick="cancel"/>
+    </LinearLayout>
+
+</LinearLayout>
