@@ -1,0 +1,26 @@
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://maven.aliyun.com/nexus/content/groups/public/'}
+        maven { url "https://jitpack.io" }
+        jcenter() // Warning: this repository is going to shut down soon
+
+    }
+}
+rootProject.name = "derry"
+include ':app'
+include ':layout'
+include ':layout_2'
+include ':computer'
+include ':test3'
+include ':work_4'
+include ':five'
+include ':exp_5'
+include ':exp_6'
+include ':app_1'
+include ':lifecycle'
+include ':calendarview'
+include ':keshe'
+include ':exp_7'

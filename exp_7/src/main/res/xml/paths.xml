@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--    external-path 是sd卡根目录-->
+    <!--    name 可以随便写-->
+    <!--    path 是你的路径 SD卡下面有 DCIM DOWNLOAD Music 等文件 这里选DCIM 保存-->
+    <external-path
+        name="my_img"
+        path="Android/data/com.example.todolist/files/Pictures/"/>
+    <external-path
+        name="external"
+        path="." />
+    <external-files-path
+        name="external_files"
+        path="." />
+    <cache-path
+        name="cache"
+        path="." />
+    <external-cache-path
+        name="external_cache"
+        path="." />
+    <files-path
+        name="files"
+        path="." />
+
+
+</paths>

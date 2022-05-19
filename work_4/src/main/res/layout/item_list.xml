@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/backColor"
+        android:layout_marginTop="20dp"
+        android:layout_width="415dp"
+        android:layout_height="40dp"
+        android:background="@color/teal_700"
+        android:clickable="true">
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="350dp"
+            android:layout_height="match_parent"
+            android:text="name"
+            android:textSize="25dp"
+            android:textAlignment="center"/>
+
+        <Button
+            android:id="@+id/btn_delete"
+            android:text="删除"
+            android:textSize="10dp"
+            android:visibility="invisible"
+            android:layout_gravity="center"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:background="@color/red"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>
