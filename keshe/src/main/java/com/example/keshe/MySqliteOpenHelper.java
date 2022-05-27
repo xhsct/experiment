@@ -41,12 +41,14 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
 
         public static final String time = "time"; //时间
 
+        public static final String now_time = "now_time";
+
         public static final String image = "image"; //图片
 
-        public static final String state = "state";//状态
+        public static final String state = "state";//状态 1为完成 2为延期
 
         //创建表格使用的SQL语句
-        public static final String CREATE_TABLE = "create table " + TABLE_NAME + " ( " + ID + " integer primary key autoincrement,"  + time + " text ,"  + title + " text ," + content + " text ,"+ image + " text ,"+ state +" text "+ ")";
+        public static final String CREATE_TABLE = "create table " + TABLE_NAME + " ( " + ID + " integer primary key autoincrement,"  + time + " text ,"  + title + " text ," + content + " text ,"+ image + " text ,"+ state +" text ,"+ now_time +" text "+")";
 
         //删除表格使用的语句
         public static final String DELETE_TABLE = "drop table if exists " + TABLE_NAME;

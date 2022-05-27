@@ -27,8 +27,8 @@
         android:id="@+id/cur_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="15dp"/>
+        android:textAlignment="textStart"
+        android:textSize="30dp"/>
     <ListView
         android:id="@+id/main_lv"
         android:layout_width="match_parent"
@@ -40,7 +40,7 @@
         android:layout_height="118dp"
         android:layout_gravity="right|bottom"
         android:layout_marginEnd="@dimen/fab_margin"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="23dp"
         android:onClick="add"
         app:srcCompat="@android:drawable/ic_input_add" />
 

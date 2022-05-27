@@ -2,12 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:background="#86B1FC">
 
     <CheckBox
         android:id="@+id/select_show"
         android:layout_width="34dp"
-        android:layout_height="36dp" />
+        android:layout_height="36dp"
+         />
 
     <TextView
         android:id="@+id/title_show"
@@ -28,8 +30,11 @@
         android:text="time" />
 
     <ImageButton
+        android:id="@+id/delete_show"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:src="@android:drawable/ic_delete"/>
+        android:src="@android:drawable/ic_delete"
+        />
+
 
 </LinearLayout>

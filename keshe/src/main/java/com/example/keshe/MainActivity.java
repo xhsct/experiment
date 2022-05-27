@@ -120,8 +120,10 @@ public class MainActivity extends AppCompatActivity implements
             curdata += Integer.toString(calendarView.getCurDay());
         }
         Intent intent = new Intent(this,add_list.class);
+        intent.putExtra("type","0");
         intent.putExtra("curdata",curdata);
         startActivity(intent);
+        select(curdata);
     }
 
     @Override
@@ -143,8 +145,7 @@ public class MainActivity extends AppCompatActivity implements
             //cursor.getColumnIndex()获取列名所在的列号
             work work = new work();
             //这里通过列号来获取数据
-            work.id = cursor.getInt(cursor.getColumnIndex(MySqliteOpenHelper.SQlite.ID));
-            work.time = cursor.getString(cursor.getColumnIndex(MySqliteOpenHelper.SQlite.time));
+            work.time = cursor.getString(cursor.getColumnIndex(MySqliteOpenHelper.SQlite.now_time));
             work.title = cursor.getString(cursor.getColumnIndex(MySqliteOpenHelper.SQlite.title));
             //把找到的数据添加到List集合中
             list.add(work);
@@ -228,7 +229,6 @@ public class MainActivity extends AppCompatActivity implements
             work work = list.get(position);//如果不是String类型的数据会报错ResourceNotFound
             holder.time.setText(work.time + "");
             holder.title.setText(work.title + "");
-            holder.id.setText(work.id + "");
             //返回视图
             return convertView;
         }
@@ -236,11 +236,10 @@ public class MainActivity extends AppCompatActivity implements
         //创建一个ViewHolder
         class ViewHolder {
             //定义控件对象
-            TextView  id,time,title;
+            TextView  time,title;
             //通过构造方法传入控件存在的View的对象
             ViewHolder(View convertView) {
                 //实例化控件对象
-                id = (TextView) convertView.findViewById(R.id.id);
                 time = (TextView) convertView.findViewById(R.id.time_select);
                 title = (TextView) convertView.findViewById(R.id.title_select);
             }
