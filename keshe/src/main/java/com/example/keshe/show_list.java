@@ -138,10 +138,11 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
                     Intent intent = new Intent(show_list.this,add_list.class);
                     intent.putExtra("type","1");
                     intent.putExtra("content",work.content);
-                    intent.putExtra("id",work.id);
+                    intent.putExtra("id",work.id+"");
+                    Log.d("Main", "onLongClick: "+work.id);
                     intent.putExtra("title",work.title);
                     intent.putExtra("time",work.time);
-                    intent.putExtra("image",work.image);
+//                    Toast.makeText(show_list.this, "chuanshu", Toast.LENGTH_SHORT).show();
                     startActivity(intent);
                     return false;
                 }

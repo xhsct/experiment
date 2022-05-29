@@ -30,7 +30,7 @@
         android:hint="详细内容编辑"/>
     <ImageView
         android:id="@+id/imageview"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="300dp"/>
     <LinearLayout
         android:layout_marginTop="40dp"
@@ -38,13 +38,13 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
         <Button
-            android:layout_marginLeft="80dp"
+            android:layout_marginLeft="40dp"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:text="增加"
             android:onClick="tianjia"/>
         <Button
-            android:layout_marginLeft="100dp"
+            android:layout_marginLeft="80dp"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:text="取消"
