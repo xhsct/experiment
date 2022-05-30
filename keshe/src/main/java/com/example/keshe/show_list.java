@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -17,6 +18,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -73,13 +76,6 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
         //给ListView设置监听事件
         listView.setOnItemClickListener(this);
         select();
-//        delete = findViewById(R.id.delete_show);
-//        delete.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View view) {
-//                Log.e("day", "onClick: ");
-//            }
-//        });
     }
     /**
      * 适配器的创建，为了显示ListView
@@ -154,6 +150,32 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
                         db.execSQL("update todolist set state = ? where id = ?"
                                 , new String[]{"done",list.get(position).id+""});
                     }
+                    else {
+                        if(work.state != "postpone"){
+                        db.execSQL("update todolist set state = ? where id = ?"
+                                , new String[]{"start",list.get(position).id+""});  }
+                    }
+                }
+            });
+            holder.time.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (holder.linear_text.getVisibility() == View.VISIBLE){
+                        holder.linear_text.setVisibility(View.GONE);
+                    }
+                    else if(holder.linear_text.getVisibility() == View.GONE){
+                        holder.linear_text.setVisibility(View.VISIBLE);
+                        holder.text_pull.setText(work.content);
+                    }
+                    if (holder.linear_image.getVisibility() == View.VISIBLE){
+                        holder.linear_image.setVisibility(View.GONE);
+                    }
+                    else if(holder.linear_image.getVisibility() == View.GONE){
+                        if (work.image != null){
+                            holder.linear_image.setVisibility(View.VISIBLE);
+                            holder.image_pull.setImageBitmap(ImageUtil.base64ToImage(work.image));
+                        }
+                    }
                 }
             });
             //返回视图
@@ -164,9 +186,11 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
         //创建一个ViewHolder
         class ViewHolder {
             //定义控件对象
-            TextView title,time;
+            TextView title,time,text_pull;
             ImageButton deleteBtn;
             CheckBox ifdone;
+            ImageView image_pull;
+            LinearLayout linear_text,linear_image;
             //通过构造方法传入控件存在的View的对象
             ViewHolder(View convertView) {
                 //实例化控件对象
@@ -174,6 +198,10 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
                 title = (TextView) convertView.findViewById(R.id.title_show);
                 deleteBtn = (ImageButton) convertView.findViewById(R.id.delete_show);
                 ifdone = (CheckBox) convertView.findViewById(R.id.select_show);
+                linear_text = convertView.findViewById(R.id.linear_text);
+                linear_image =convertView.findViewById(R.id.linear_image);
+                text_pull = convertView.findViewById(R.id.text_pull);
+                image_pull = convertView.findViewById(R.id.image_pull);
             }
         }
     };

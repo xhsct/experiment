@@ -54,6 +54,7 @@ public class add_list extends AppCompatActivity {
     private Uri imageUri;
     private ImageView imageView;
     private String imageBase64;
+    private String ID;
     Intent intent;
     SQLiteDatabase db;
 
@@ -75,22 +76,22 @@ public class add_list extends AppCompatActivity {
         else if (intent.getStringExtra("type").equals("1")){
             MySqliteOpenHelper helper = new MySqliteOpenHelper(this, MySqliteOpenHelper.SQlite.DB_NAME, null, 1);
             db = helper.getReadableDatabase();
-         //   String querySql="select * from todolist where id= ? ";
-            Log.d("Main", "onCreate: "+intent.getStringExtra("id"));
+            ID = intent.getStringExtra("id");
+            curdata = intent.getStringExtra("time");
             String []args=new String[]{intent.getStringExtra("id")};
             Cursor cursor = db.query("todolist",null,"id=?",args,null,null,null);
             while (cursor.moveToNext()) {
                 @SuppressLint("Range")
                 String image = cursor.getString(cursor.getColumnIndex(MySqliteOpenHelper.SQlite.image));
-                imageView.setImageBitmap(ImageUtil.base64ToImage(image));
+                Log.d("image", image+"");
+                if (image != null){
+                    imageView.setImageBitmap(ImageUtil.base64ToImage(image));
+                }
             }
             db.close();
             textView.setText(intent.getStringExtra("time"));
             title_list.setText(intent.getStringExtra("title"));
             content_list.setText(intent.getStringExtra("content"));
-
-            Log.d("Add", "onCreate: "+intent.getExtras().get("image"));
-//            imageView.setImageBitmap(ImageUtil.base64ToImage(intent.getStringExtra("image")));
         }
         data = findViewById(R.id.select_data);
         data.setOnClickListener(new View.OnClickListener() {
@@ -209,10 +210,18 @@ public class add_list extends AppCompatActivity {
         DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
         String format = dateFormat.format(date);
         db = helper.getWritableDatabase();
-        db.execSQL("insert into todolist values(null,?,?,?,?,'0',?)"
-                , new String[]{curdata,title,content,imageBase64,format});
-        db.close();
-        startActivity(new Intent(this,MainActivity.class));
+        if(intent.getStringExtra("type").equals("0")) {
+            db.execSQL("insert into todolist values(null,?,?,?,?,'start',?)"
+                    , new String[]{curdata, title, content, imageBase64, format});
+            db.close();
+            startActivity(new Intent(this, MainActivity.class));
+        }else if(intent.getStringExtra("type").equals("1")){
+            Log.e("title", title+"");
+            db.execSQL("update todolist set title=?,content=?,now_time=?,image=?,time=? where id=?"
+                    , new String[]{title,content,format,imageBase64,curdata,ID});
+            db.close();
+            startActivity(new Intent(this,show_list.class));
+        }
 
     }
 
