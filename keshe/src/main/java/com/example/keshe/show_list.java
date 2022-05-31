@@ -63,11 +63,13 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
             return true;
         }
         if (id == R.id.statist) {
+            startActivity(new Intent(this,statistic.class));
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -170,10 +172,16 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
                                 , new String[]{"done",work.id+""});
                     }
                     else {
+                        Log.d("statea", work.state+"");
                         if(work.state != "postpone"){
                         db.execSQL("update todolist set state = ? where id = ?"
                                 , new String[]{"start",work.id+""});  }
-                        else {
+                        Date date = new Date(System.currentTimeMillis());
+                        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+                        String format = dateFormat.format(date);
+                        if (Integer.parseInt(format)-Integer.parseInt(work.time)>2){
+                            db.execSQL("update todolist set state = ? where id = ?"
+                                    , new String[]{"postpone",work.id+""});
                             holder.set_background.setBackgroundColor(Color.rgb(190,0,80));
                         }
                     }

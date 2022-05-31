@@ -31,7 +31,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
@@ -52,7 +55,9 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+//        Date date = new Date(System.currentTimeMillis());
+//        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+//        String format = dateFormat.format(date);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
@@ -90,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements
             return true;
         }
         if (id == R.id.statist) {
+            startActivity(new Intent(this,statistic.class));
             return true;
         }
 
@@ -104,24 +110,31 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void add(View view) {
-        calendarView = findViewById(R.id.calendarView);
+//        calendarView = findViewById(R.id.calendarView);
         String curdata = "";
+        String show_data = "";
         curdata += Integer.toString(calendarView.getCurYear());
+        show_data += Integer.toString(calendarView.getCurYear())+"年";
         if (calendarView.getCurMonth()/10==0){
             curdata += "0"+calendarView.getCurMonth();
+            show_data += "0"+calendarView.getCurMonth()+"月";
         }
         else {
             curdata += Integer.toString(calendarView.getCurMonth());
+            show_data += Integer.toString(calendarView.getCurMonth())+"月";
         }
         if (calendarView.getCurDay()/10==0){
             curdata += "0"+calendarView.getCurDay();
+            show_data += "0"+calendarView.getCurDay()+"日";
         }
         else {
             curdata += Integer.toString(calendarView.getCurDay());
+            show_data += Integer.toString(calendarView.getCurDay())+"日";
         }
         Intent intent = new Intent(this,add_list.class);
         intent.putExtra("type","0");
         intent.putExtra("curdata",curdata);
+        intent.putExtra("show_data",show_data);
         startActivity(intent);
         select(curdata);
     }
@@ -130,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements
     public void onCalendarOutOfRange(Calendar calendar) {
 
     }
+
     @SuppressLint("Range")
     private void select(String time) {
         //先清除页面上的数据
@@ -156,19 +170,23 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onCalendarSelect(Calendar calendar, boolean isClick) {
-//        calendarView =findViewById(R.id.calendarView);
-        String select_data=Integer.toString(calendar.getYear());
+        String select_data=calendar.getYear()+"-";
+        String select = Integer.toString(calendar.getYear());
         if (calendar.getMonth()/10==0){
-            select_data += "0"+calendar.getMonth();
+            select_data += "0"+calendar.getMonth()+"-";
+            select += "0"+calendar.getMonth();
         }
         else {
-            select_data += Integer.toString(calendar.getMonth());
+            select_data += Integer.toString(calendar.getMonth())+"-";
+            select += Integer.toString(calendar.getMonth());
         }
         if (calendar.getDay()/10==0){
             select_data += "0"+calendar.getDay();
+            select += "0"+calendar.getDay();
         }
         else {
             select_data += Integer.toString(calendar.getDay());
+            select += Integer.toString(calendar.getDay());
         }
         data = findViewById(R.id.cur_data);
         data.setText(select_data);
@@ -176,10 +194,8 @@ public class MainActivity extends AppCompatActivity implements
         listView.setAdapter(adapter);
         //给ListView设置监听事件
         listView.setOnItemClickListener(this);
-        select(select_data);
+        select(select);
         //刷新数据页面
-
-
 //        Log.e("day",Integer.toString(calendar.getDay()));
 //        Toast.makeText(this, Integer.toString(calendar.getDay()), Toast.LENGTH_SHORT).show();
     }

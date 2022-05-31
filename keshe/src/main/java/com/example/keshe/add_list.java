@@ -68,10 +68,10 @@ public class add_list extends AppCompatActivity {
         content_list = findViewById(R.id.content_list);
         TextView textView = findViewById(R.id.data);
         intent =  getIntent();
-        Log.d("Add", "onCreate: "+intent.getStringExtra("image1"));
+//        Log.d("Add", "onCreate: "+intent.getStringExtra("image1"));
         if(intent.getStringExtra("type").equals("0")){
             curdata = intent.getStringExtra("curdata");
-            textView.setText(curdata);
+            textView.setText(intent.getStringExtra("show_data"));
         }
         else if (intent.getStringExtra("type").equals("1")){
             MySqliteOpenHelper helper = new MySqliteOpenHelper(this, MySqliteOpenHelper.SQlite.DB_NAME, null, 1);
