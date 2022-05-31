@@ -6,9 +6,9 @@
     android:orientation="vertical"
     >
     <LinearLayout
+        android:id="@+id/set_background"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#86B1FC">
+        android:layout_height="wrap_content">
 
         <CheckBox
             android:id="@+id/select_show"

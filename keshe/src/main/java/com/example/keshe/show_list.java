@@ -5,6 +5,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,7 +29,10 @@ import android.widget.Toast;
 
 import com.example.keshe.databinding.ActivityMainBinding;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class show_list extends AppCompatActivity implements AdapterView.OnItemClickListener{
@@ -115,6 +120,16 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
                 a = true;
             }
             holder.ifdone.setChecked(a);
+            Date date = new Date(System.currentTimeMillis());
+            DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+            String format = dateFormat.format(date);
+            if (Integer.parseInt(format)-Integer.parseInt(work.time)>2 && !holder.ifdone.isChecked()){
+                db.execSQL("update todolist set state = ? where id = ?"
+                        , new String[]{"postpone",work.id+""});
+                holder.set_background.setBackgroundColor(Color.rgb(190,0,80));
+            }else {
+                holder.set_background.setBackgroundColor(Color.rgb(1,87,190));
+            }
             holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -147,13 +162,20 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     if (holder.ifdone.isChecked()){
+                        ColorDrawable colorDrawable = (ColorDrawable)holder.set_background.getBackground();
+                        if (colorDrawable.getColor() == Color.rgb(190,0,80)){
+                            holder.set_background.setBackgroundColor(Color.rgb(1,87,190));
+                        }
                         db.execSQL("update todolist set state = ? where id = ?"
-                                , new String[]{"done",list.get(position).id+""});
+                                , new String[]{"done",work.id+""});
                     }
                     else {
                         if(work.state != "postpone"){
                         db.execSQL("update todolist set state = ? where id = ?"
-                                , new String[]{"start",list.get(position).id+""});  }
+                                , new String[]{"start",work.id+""});  }
+                        else {
+                            holder.set_background.setBackgroundColor(Color.rgb(190,0,80));
+                        }
                     }
                 }
             });
@@ -190,7 +212,7 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
             ImageButton deleteBtn;
             CheckBox ifdone;
             ImageView image_pull;
-            LinearLayout linear_text,linear_image;
+            LinearLayout linear_text,linear_image,set_background;
             //通过构造方法传入控件存在的View的对象
             ViewHolder(View convertView) {
                 //实例化控件对象
@@ -202,6 +224,7 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
                 linear_image =convertView.findViewById(R.id.linear_image);
                 text_pull = convertView.findViewById(R.id.text_pull);
                 image_pull = convertView.findViewById(R.id.image_pull);
+                set_background = convertView.findViewById(R.id.set_background);
             }
         }
     };
