@@ -236,6 +236,7 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
             }
         }
     };
+
     @SuppressLint("Range")
     private void select() {
         //先清除页面上的数据
