@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.example.keshe.databinding.ActivityMainBinding;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -265,6 +266,22 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+    }
+
+    public void add(View view) {
+        Date date = new Date(System.currentTimeMillis());
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        String curdata = dateFormat.format(date);
+        StringBuffer show_data = new StringBuffer(curdata);
+        show_data.insert(8,"日");
+        show_data.insert(6,"月");
+        show_data.insert(4,"年");
+        Intent intent = new Intent(this,add_list.class);
+        intent.putExtra("type","0");
+        intent.putExtra("return","1");
+        intent.putExtra("curdata",curdata);
+        intent.putExtra("show_data", (Serializable) show_data);
+        startActivity(intent);
     }
 
     class list {

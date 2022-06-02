@@ -214,7 +214,10 @@ public class add_list extends AppCompatActivity {
             db.execSQL("insert into todolist values(null,?,?,?,?,'start',?)"
                     , new String[]{curdata, title, content, imageBase64, format});
             db.close();
-            startActivity(new Intent(this, MainActivity.class));
+            if (intent.getStringExtra("return").equals("1")){
+                startActivity(new Intent(this, show_list.class));
+            }else {
+            startActivity(new Intent(this, MainActivity.class));}
         }else if(intent.getStringExtra("type").equals("1")){
             Log.e("title", title+"");
             db.execSQL("update todolist set title=?,content=?,now_time=?,image=?,time=? where id=?"
@@ -227,7 +230,10 @@ public class add_list extends AppCompatActivity {
 
     public void cancel(View view) {
         if(intent.getStringExtra("type").equals("0")){
-            startActivity(new Intent(this,MainActivity.class));
+            if (intent.getStringExtra("return").equals("1")){
+                startActivity(new Intent(this, show_list.class));
+            }else {
+                startActivity(new Intent(this, MainActivity.class));}
         }
         else if (intent.getStringExtra("type").equals("1")){
             startActivity(new Intent(this,show_list.class));

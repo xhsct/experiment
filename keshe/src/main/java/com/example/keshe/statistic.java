@@ -159,7 +159,7 @@ public class statistic extends AppCompatActivity {
                         da_before = curdata;
                         count(da_before,da_behind);
                     }
-                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH)-1, calendar.get(Calendar.DAY_OF_MONTH)).show();
 
             }
         });
@@ -195,14 +195,40 @@ public class statistic extends AppCompatActivity {
         // x是横坐标，表示位置，y是纵坐标，表示高度
         List<BarEntry> barEntries1 = new ArrayList<>();
         barEntries1.add(new BarEntry(0,(float)start));
-        barEntries1.add(new BarEntry(1,(float)done));
-        barEntries1.add(new BarEntry(2, (float)postpone));
-        BarDataSet barDataSet1 = new BarDataSet(barEntries1,"条形图");
+        BarDataSet barDataSet1 = new BarDataSet(barEntries1,"创建");
         barDataSet1.setValueTextColor(Color.RED); // 值的颜色
         barDataSet1.setValueTextSize(15f); // 值的大小
-        barDataSet1.setColor(Color.parseColor("#1AE61A")); // 柱子的颜色
+        barDataSet1.setColor(Color.parseColor("#0000ff")); // 柱子的颜色
         // 设置柱子上数据显示的格式
         barDataSet1.setValueFormatter(new IValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                // 此处的value默认保存一位小数
+                return (int)value+"";
+            }
+        });
+        List<BarEntry> barEntries2 = new ArrayList<>();
+        barEntries2.add(new BarEntry(1,(float)done));
+        BarDataSet barDataSet2 = new BarDataSet(barEntries2,"完成");
+        barDataSet2.setValueTextColor(Color.RED); // 值的颜色
+        barDataSet2.setValueTextSize(15f); // 值的大小
+        barDataSet2.setColor(Color.parseColor("#00ff00")); // 柱子的颜色
+        // 设置柱子上数据显示的格式
+        barDataSet2.setValueFormatter(new IValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                // 此处的value默认保存一位小数
+                return (int)value+"";
+            }
+        });
+        List<BarEntry> barEntries3 = new ArrayList<>();
+        barEntries3.add(new BarEntry(2, (float)postpone));
+        BarDataSet barDataSet3 = new BarDataSet(barEntries3,"延期");
+        barDataSet3.setValueTextColor(Color.RED); // 值的颜色
+        barDataSet3.setValueTextSize(15f); // 值的大小
+        barDataSet3.setColor(Color.parseColor("#ff0000")); // 柱子的颜色
+        // 设置柱子上数据显示的格式
+        barDataSet3.setValueFormatter(new IValueFormatter() {
             @Override
             public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
                 // 此处的value默认保存一位小数
@@ -212,18 +238,28 @@ public class statistic extends AppCompatActivity {
 
 
         sets.add(barDataSet1);
+        sets.add(barDataSet2);
+        sets.add(barDataSet3);
 
         BarData barData = new BarData(sets);
-        Log.d("TAGa", barData+"");
         barData.setBarWidth(0.3f); // 设置柱子的宽度
+        Log.d("TAGa", barData+"");
         barChart.setData(barData);
+        //三个参数： X轴的起点，组和组之间的间隔 组内柱子的间隔
+        barChart.groupBars(-0.48f,0,0.68f);
+
     }
 
     private void setAxis() {
+        barChart.setDrawBorders(true); //是否在折线图上添加边框
+        barChart.setTouchEnabled(false); // 设置是否可以触摸
+        barChart.setDragEnabled(false);// 是否可以拖拽
+        barChart.setScaleEnabled(false);// 是否可以缩放
+        barChart.setPinchZoom(false);//y轴的值是否跟随图表变换缩放;如果禁止，y轴的值会跟随图表变换缩放
         // 设置x轴
         XAxis xAxis = barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);  // 设置x轴显示在下方，默认在上方
-        xAxis.setDrawGridLines(false); // 将此设置为true，绘制该轴的网格线。
+        xAxis.setDrawGridLines(true); // 将此设置为true，绘制该轴的网格线。
         xAxis.setLabelCount(3);  // 设置x轴上的标签个数
         xAxis.setTextSize(15f); // x轴上标签的大小
         final String labelName[] = {"创建","完成","延期"};
@@ -307,7 +343,7 @@ public class statistic extends AppCompatActivity {
         // 把准备好的数据统一进行格式设置
         PieDataSet pieDataSet = new PieDataSet(pieEntries, "");
         // 设置饼图各部分的颜色
-        pieDataSet.setColors(Color.parseColor("#ff0000"), Color.parseColor("#00ff00"),Color.parseColor("#0000ff"));
+        pieDataSet.setColors(Color.parseColor("#0000ff"), Color.parseColor("#00ff00"),Color.parseColor("#ff0000"));
         // 设置饼图中数据显示的格式
         pieDataSet.setValueFormatter(new IValueFormatter() {
             @Override
@@ -317,7 +353,7 @@ public class statistic extends AppCompatActivity {
             }
         });
         pieDataSet.setValueTextSize(15f);
-        pieDataSet.setSliceSpace(8f); // 设置扇区中的间隔
+        pieDataSet.setSliceSpace(5f); // 设置扇区中的间隔
         // 设置饼图显示的线
         pieDataSet.setValueLineColor(Color.BLACK);
         pieDataSet.setValueLinePart1OffsetPercentage(80); // 第一条线离圆心的百分比
