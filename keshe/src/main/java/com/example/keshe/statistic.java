@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -27,6 +28,9 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
@@ -35,6 +39,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 import org.w3c.dom.Text;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,6 +53,7 @@ public class statistic extends AppCompatActivity {
     public String da_before,da_behind;
     public int start,postpone,done;
     private BarChart barChart;
+    private PieChart pieChart;
     SQLiteDatabase db;
 
     @Override
@@ -162,21 +168,36 @@ public class statistic extends AppCompatActivity {
     private void initBarChart(int start,int done,int postpone) {
         barChart = findViewById(R.id.bar_chart1);
         barChart.getDescription().setEnabled(false); // 不显示描述
-        barChart.setExtraOffsets(20, 20, 20, 300); // 设置饼图的偏移量，类似于内边距 ，设置视图窗口大小
+        barChart.setExtraOffsets(20, 10, 20, 5); // 设置饼图的偏移量，类似于内边距 ，设置视图窗口大小
         setAxis(); // 设置坐标轴
+        setLegend();
         setData(start,done,postpone);  // 设置数据
     }
 
+    private void setLegend() {
+        Legend legend = barChart.getLegend();
+        legend.setFormSize(12f); // 图例的图形大小
+        legend.setTextSize(15f); // 图例的文字大小
+        legend.setDrawInside(true); // 设置图例在图中
+        legend.setOrientation(Legend.LegendOrientation.VERTICAL); // 图例的方向为垂直
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT); //显示位置，水平右对齐
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP); // 显示位置，垂直上对齐
+        // 设置水平与垂直方向的偏移量
+        legend.setYOffset(1f);
+        legend.setXOffset(30f);
+    }
+
+
     private void setData(int start,int done,int postpone) {
+        barChart.clear();
         List<IBarDataSet> sets = new ArrayList<>();
         // 此处有两个DataSet，所以有两条柱子，BarEntry（）中的x和y分别表示显示的位置和高度
         // x是横坐标，表示位置，y是纵坐标，表示高度
         List<BarEntry> barEntries1 = new ArrayList<>();
-        Log.d("TAGf", start +""+done);
         barEntries1.add(new BarEntry(0,(float)start));
-        barEntries1.add(new BarEntry(1, (float)done));
+        barEntries1.add(new BarEntry(1,(float)done));
         barEntries1.add(new BarEntry(2, (float)postpone));
-        BarDataSet barDataSet1 = new BarDataSet(barEntries1, "");
+        BarDataSet barDataSet1 = new BarDataSet(barEntries1,"条形图");
         barDataSet1.setValueTextColor(Color.RED); // 值的颜色
         barDataSet1.setValueTextSize(15f); // 值的大小
         barDataSet1.setColor(Color.parseColor("#1AE61A")); // 柱子的颜色
@@ -189,9 +210,11 @@ public class statistic extends AppCompatActivity {
             }
         });
 
+
         sets.add(barDataSet1);
 
         BarData barData = new BarData(sets);
+        Log.d("TAGa", barData+"");
         barData.setBarWidth(0.3f); // 设置柱子的宽度
         barChart.setData(barData);
     }
@@ -215,7 +238,7 @@ public class statistic extends AppCompatActivity {
                 }
             }
         });
-        xAxis.setYOffset(15); // 设置标签对x轴的偏移量，垂直方向
+        xAxis.setYOffset(20); // 设置标签对x轴的偏移量，垂直方向
 
         // 设置y轴，y轴有两条，分别为左和右
         YAxis yAxis_right = barChart.getAxisRight();
@@ -251,8 +274,69 @@ public class statistic extends AppCompatActivity {
                 }
             }
         }
-        Log.d("TAG", start+""+done+""+postpone);
+//        Log.d("TAG", start+""+done+""+postpone);
         initBarChart(start,done,postpone);
+        // 初始化饼图
+        initPieChart(start,done,postpone);
+    }
+
+    private void initPieChart(int start,int done,int postpone) {
+        pieChart = findViewById(R.id.pie_chart);
+        pieChart.clear();
+        pieChart.getDescription().setEnabled(false); // 不显示描述
+        pieChart.setDrawHoleEnabled(false); // 不显示饼图中间的空洞
+        pieChart.setRotationEnabled(false); // 不允许饼图旋转
+        pieChart.setDrawEntryLabels(false); // 不在饼图中显示标签
+        pieChart.setExtraOffsets(20, 20, 20, 20); // 设置饼图的偏移量，类似于内边距 ，设置视图窗口大小
+        setLegend_pie(); // 设置图例
+        setData_pie(start,done,postpone); // 为饼图设置数据
+    }
+
+    private void setData_pie(int start,int done,int postpone) {
+        float sum = start + done + postpone;
+        DecimalFormat df =new DecimalFormat("#.##");
+        float start_end = Float.parseFloat(df.format(start/sum*100));
+        float done_end = Float.parseFloat(df.format(done/sum*100));
+        float postpone_end = Float.parseFloat(df.format(postpone/sum*100));
+        Log.d("TAGas", postpone_end+""+start_end+""+done_end);
+        List<PieEntry> pieEntries = new ArrayList<>();
+        // 准备饼图中要显示的数据
+        pieEntries.add(new PieEntry(start_end, "创建"));
+        pieEntries.add(new PieEntry(done_end, "完成"));
+        pieEntries.add(new PieEntry(postpone_end, "延期"));
+        // 把准备好的数据统一进行格式设置
+        PieDataSet pieDataSet = new PieDataSet(pieEntries, "");
+        // 设置饼图各部分的颜色
+        pieDataSet.setColors(Color.parseColor("#ff0000"), Color.parseColor("#00ff00"),Color.parseColor("#0000ff"));
+        // 设置饼图中数据显示的格式
+        pieDataSet.setValueFormatter(new IValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                // 此处的value就是PieEntry（）中第一个参数的value
+                return value+"%";
+            }
+        });
+        pieDataSet.setValueTextSize(15f);
+        pieDataSet.setSliceSpace(8f); // 设置扇区中的间隔
+        // 设置饼图显示的线
+        pieDataSet.setValueLineColor(Color.BLACK);
+        pieDataSet.setValueLinePart1OffsetPercentage(80); // 第一条线离圆心的百分比
+        pieDataSet.setValueLinePart1Length(0.5f); // 第一条线长度
+        pieDataSet.setValueLinePart2Length(0.7f); // 第二条线长度
+        pieDataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE); // 设置值显示的位置
+
+        PieData pieData = new PieData(pieDataSet);
+        pieChart.setData(pieData); // 为饼图设置数据
+
+    }
+
+    private void setLegend_pie() {
+        Legend legend = pieChart.getLegend();
+        legend.setFormSize(15f); // 图例的图形大小
+        legend.setTextSize(15f); // 图例的文字大小
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER); // 显示的位置水平居中
+        legend.setDrawInside(true); // 设置图例在图中
+        legend.setYOffset(5); // 设置图例在垂直方向的偏移量
     }
 
     @Override
