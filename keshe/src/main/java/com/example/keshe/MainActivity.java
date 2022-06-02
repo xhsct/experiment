@@ -55,24 +55,29 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        Date date = new Date(System.currentTimeMillis());
-//        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-//        String format = dateFormat.format(date);
+        Date date = new Date(System.currentTimeMillis());
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        String format = dateFormat.format(date);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
-        listView = (ListView) findViewById(R.id.main_lv);
+        listView = findViewById(R.id.main_lv);
         MySqliteOpenHelper helper = new MySqliteOpenHelper(this, MySqliteOpenHelper.SQlite.DB_NAME, null, 1);
         //获得数据库对象helper.get...
         db = helper.getReadableDatabase();
-
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-
         calendarView = findViewById(R.id.calendarView);
-
         calendarView.setOnCalendarSelectListener(this);
+        StringBuffer select_now = new StringBuffer(format);
+        select_now.insert(6,"-");
+        select_now.insert(4,"-");
+        data = findViewById(R.id.cur_data);
+        data.setText(select_now);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(this);
+        select(format);
     }
 
     @Override
@@ -92,10 +97,12 @@ public class MainActivity extends AppCompatActivity implements
         //noinspection SimplifiableIfStatement
         if (id == R.id.exchange) {
             startActivity(new Intent(this,show_list.class));
+            finish();
             return true;
         }
         if (id == R.id.statist) {
             startActivity(new Intent(this,statistic.class));
+            finish();
             return true;
         }
 
@@ -133,9 +140,11 @@ public class MainActivity extends AppCompatActivity implements
         }
         Intent intent = new Intent(this,add_list.class);
         intent.putExtra("type","0");
+        intent.putExtra("return","0");
         intent.putExtra("curdata",curdata);
         intent.putExtra("show_data",show_data);
         startActivity(intent);
+        finish();
         select(curdata);
     }
 
@@ -188,12 +197,7 @@ public class MainActivity extends AppCompatActivity implements
             select_data += Integer.toString(calendar.getDay());
             select += Integer.toString(calendar.getDay());
         }
-        data = findViewById(R.id.cur_data);
         data.setText(select_data);
-        //给ListView设置适配器
-        listView.setAdapter(adapter);
-        //给ListView设置监听事件
-        listView.setOnItemClickListener(this);
         select(select);
         //刷新数据页面
 //        Log.e("day",Integer.toString(calendar.getDay()));

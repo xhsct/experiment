@@ -218,12 +218,14 @@ public class add_list extends AppCompatActivity {
                 startActivity(new Intent(this, show_list.class));
             }else {
             startActivity(new Intent(this, MainActivity.class));}
+            finish();
         }else if(intent.getStringExtra("type").equals("1")){
             Log.e("title", title+"");
             db.execSQL("update todolist set title=?,content=?,now_time=?,image=?,time=? where id=?"
                     , new String[]{title,content,format,imageBase64,curdata,ID});
             db.close();
             startActivity(new Intent(this,show_list.class));
+            finish();
         }
 
     }
@@ -234,10 +236,12 @@ public class add_list extends AppCompatActivity {
                 startActivity(new Intent(this, show_list.class));
             }else {
                 startActivity(new Intent(this, MainActivity.class));}
+            finish();
         }
         else if (intent.getStringExtra("type").equals("1")){
             startActivity(new Intent(this,show_list.class));
         }
+        finish();
 
     }
 }

@@ -158,6 +158,7 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
                     intent.putExtra("time",work.time);
 //                    Toast.makeText(show_list.this, "chuanshu", Toast.LENGTH_SHORT).show();
                     startActivity(intent);
+                    finish();
                     return false;
                 }
             });
@@ -282,6 +283,7 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
         intent.putExtra("curdata",curdata);
         intent.putExtra("show_data", (Serializable) show_data);
         startActivity(intent);
+        finish();
     }
 
     class list {
