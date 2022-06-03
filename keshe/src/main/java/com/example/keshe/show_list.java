@@ -61,10 +61,12 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
         //noinspection SimplifiableIfStatement
         if (id == R.id.exchange) {
             startActivity(new Intent(this,show_list.class));
+            finish();
             return true;
         }
         if (id == R.id.statist) {
             startActivity(new Intent(this,statistic.class));
+            finish();
             return true;
         }
 

@@ -63,6 +63,7 @@ public class add_list extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
         imageView = findViewById(R.id.imageview);
+        // 创建一个实例对象
         calendar = Calendar.getInstance();
         title_list = findViewById(R.id.title_list);
         content_list = findViewById(R.id.content_list);
@@ -81,6 +82,7 @@ public class add_list extends AppCompatActivity {
             String []args=new String[]{intent.getStringExtra("id")};
             Cursor cursor = db.query("todolist",null,"id=?",args,null,null,null);
             while (cursor.moveToNext()) {
+                // 如果查询到的图片信息不是空，那就通过base64toimage转化出来
                 @SuppressLint("Range")
                 String image = cursor.getString(cursor.getColumnIndex(MySqliteOpenHelper.SQlite.image));
                 Log.d("image", image+"");
@@ -94,6 +96,7 @@ public class add_list extends AppCompatActivity {
             content_list.setText(intent.getStringExtra("content"));
         }
         data = findViewById(R.id.select_data);
+        // 修改日历控件
         data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -131,6 +134,7 @@ public class add_list extends AppCompatActivity {
             }
         });
         camera = findViewById(R.id.camera);
+        // 照相功能
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -159,6 +163,7 @@ public class add_list extends AppCompatActivity {
     }
 
     public void toTake(){
+        // 创建一个文件流，用来存储拍到的照片
         File imageTemp = new File(getExternalCacheDir(),"imageOut.jepg");
         if(imageTemp.exists()){
             imageTemp.delete();
@@ -170,18 +175,19 @@ public class add_list extends AppCompatActivity {
         }
 
         if (Build.VERSION.SDK_INT > 24){
-            // contentProvider
+            // contentProvider 这个在里AndroidManifest中设置
             imageUri = FileProvider.getUriForFile(this,"com.example.keshe.fileprovider",imageTemp);
         }else {
             imageUri = Uri.fromFile(imageTemp);
         }
+        // 隐式调用
         Intent intent_1 = new Intent();
         intent_1.setAction("android.media.action.IMAGE_CAPTURE");
         intent_1.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
         startActivityForResult(intent_1, REQUEST_CODE_TAKE);
 
     }
-
+    // 回调到imageView中并显示
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -193,6 +199,7 @@ public class add_list extends AppCompatActivity {
                     Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                     imageView.setImageBitmap(bitmap);
                     String imagetoBase64 = ImageUtil.imageToBase64(bitmap);
+                    // 将得到的图片转为string类型，以便后面存入数据库中
                     imageBase64 = imagetoBase64;
 
                 } catch (FileNotFoundException e) {
@@ -202,6 +209,7 @@ public class add_list extends AppCompatActivity {
         }
     }
 
+    // 添加功能
     public void tianjia(View view) {
         String title = title_list.getText().toString();
         String content = content_list.getText().toString();

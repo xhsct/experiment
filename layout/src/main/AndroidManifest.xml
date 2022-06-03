@@ -10,6 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Derry">
         <activity
+            android:name=".MainActivity3"
+            android:exported="false"
+            android:label="@string/title_activity_main3"
+            android:theme="@style/Theme.Derry.NoActionBar" />
+        <activity
             android:name=".MainActivity2"
             android:exported="false" />
         <activity

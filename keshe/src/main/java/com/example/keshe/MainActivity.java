@@ -55,31 +55,46 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Date date = new Date(System.currentTimeMillis());
-        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-        String format = dateFormat.format(date);
+        // 系统自建
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
-        listView = findViewById(R.id.main_lv);
-        MySqliteOpenHelper helper = new MySqliteOpenHelper(this, MySqliteOpenHelper.SQlite.DB_NAME, null, 1);
-        //获得数据库对象helper.get...
-        db = helper.getReadableDatabase();
+        // 系统自建
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
+        first_prepare();
+    }
+
+    public void first_prepare(){
+        // 获取一个当前的时间信息
+        Date date = new Date(System.currentTimeMillis());
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        String format = dateFormat.format(date);
+        // 当前页面用来显示事件的列表
+        listView = findViewById(R.id.main_lv);
+        // 建立了一个MySqlite0penHelper 用来连接数据库
+        MySqliteOpenHelper helper = new MySqliteOpenHelper(this, MySqliteOpenHelper.SQlite.DB_NAME, null, 1);
+        //获得数据库对象helper.get...
+        db = helper.getReadableDatabase();
+        // 获取日历视图
         calendarView = findViewById(R.id.calendarView);
         calendarView.setOnCalendarSelectListener(this);
+        // 将默认为当前信息 使得listview中显示当前时间的任务
         StringBuffer select_now = new StringBuffer(format);
         select_now.insert(6,"-");
         select_now.insert(4,"-");
+        // 在cur_data textview中显示形式为yyyy-MM-dd的形式
         data = findViewById(R.id.cur_data);
         data.setText(select_now);
+        //对listview进行监听 并且将format作为参数传入得到todo事件的列表
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
         select(format);
     }
 
+    // 创建了右上角的多选
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -87,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements
         return true;
     }
 
+    // 具体规定了右上角的两个选项
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -97,12 +113,10 @@ public class MainActivity extends AppCompatActivity implements
         //noinspection SimplifiableIfStatement
         if (id == R.id.exchange) {
             startActivity(new Intent(this,show_list.class));
-            finish();
             return true;
         }
         if (id == R.id.statist) {
             startActivity(new Intent(this,statistic.class));
-            finish();
             return true;
         }
 
@@ -116,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements
                 || super.onSupportNavigateUp();
     }
 
+    // 当点击add事件出发的操作
     public void add(View view) {
 //        calendarView = findViewById(R.id.calendarView);
         String curdata = "";
@@ -138,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements
             curdata += Integer.toString(calendarView.getCurDay());
             show_data += Integer.toString(calendarView.getCurDay())+"日";
         }
+        // 上面操作是对curdata show_data 进行编码，下面是通过intent进行传输时间，虽然有些没有必要传过去，但是之前没有想到直接获取当前时间
         Intent intent = new Intent(this,add_list.class);
         intent.putExtra("type","0");
         intent.putExtra("return","0");
@@ -153,9 +169,9 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
+    // 根据time来查询当前任务序列
     @SuppressLint("Range")
     private void select(String time) {
-        //先清除页面上的数据
         list.clear();
         String querySql="select * from todolist where time=?";
         String []args=new String[]{time};
@@ -177,6 +193,7 @@ public class MainActivity extends AppCompatActivity implements
         adapter.notifyDataSetChanged();
     }
 
+    // 通过选择点击的日期来得到任务序列
     @Override
     public void onCalendarSelect(Calendar calendar, boolean isClick) {
         String select_data=calendar.getYear()+"-";
@@ -215,6 +232,7 @@ public class MainActivity extends AppCompatActivity implements
         String title;
         String time;
     }
+
     /**
      * 适配器的创建，为了显示ListView
      */
