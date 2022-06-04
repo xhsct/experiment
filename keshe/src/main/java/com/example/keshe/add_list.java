@@ -227,6 +227,8 @@ public class add_list extends AppCompatActivity {
                 startActivity(new Intent(this, show_list.class));
             }else {
             startActivity(new Intent(this, MainActivity.class));}
+//            MainActivity mainActivity = new MainActivity();
+//            mainActivity.init_data();
             finish();
         }else if(intent.getStringExtra("type").equals("1")){
             Log.e("title", title+"");

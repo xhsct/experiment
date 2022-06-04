@@ -120,7 +120,11 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
             //往控件上放置数据
             list work = list.get(position);//如果不是String类型的数据会报错ResourceNotFound
             holder.title.setText(work.title + "");
-            holder.time.setText(work.time + "");
+            StringBuffer show_data = new StringBuffer(work.time);
+            show_data.insert(8,"日");
+            show_data.insert(6,"月");
+            show_data.insert(4,"年");
+            holder.time.setText(show_data);
             if (work.state.equals("done")){
                 a = true;
             }
@@ -247,7 +251,8 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
         list.clear();
         //再加载数据库的数据
         //这里查询所有的数据，只需要一个表名就可以了,后面的条件可以不写，获得的是一个结果集
-        Cursor cursor = db.query(MySqliteOpenHelper.SQlite.TABLE_NAME, null, null, null, null, null, null);
+        String time = "time";
+        Cursor cursor = db.query(MySqliteOpenHelper.SQlite.TABLE_NAME, null, null, null, null, null, time);
         //结果集指向的表头前面.moveToNext()来指向下一个结果
         while (cursor.moveToNext()) {
             //获取结果集里面的数据

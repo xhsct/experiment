@@ -70,9 +70,9 @@ public class MainActivity extends AppCompatActivity implements
         init_data();
     }
 
-    private void init_data() {
+    public void init_data() {
         Map<String, Calendar> map=new HashMap<>();
-        Cursor cursor = db.query("todolist", new String[]{"time"},null,null,null,null,null);
+        Cursor cursor = db.query(MySqliteOpenHelper.SQlite.TABLE_NAME, new String[]{"time"},null,null,null,null,null);
         while (cursor.moveToNext()){
             @SuppressLint("Range")
             String time = cursor.getString(cursor.getColumnIndex(MySqliteOpenHelper.SQlite.time));
