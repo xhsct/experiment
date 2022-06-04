@@ -35,7 +35,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements
         CalendarView.OnCalendarSelectListener, AdapterView.OnItemClickListener{
@@ -65,7 +67,35 @@ public class MainActivity extends AppCompatActivity implements
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
         first_prepare();
+        init_data();
     }
+
+    private void init_data() {
+        Map<String, Calendar> map=new HashMap<>();
+        Cursor cursor = db.query("todolist", new String[]{"time"},null,null,null,null,null);
+        while (cursor.moveToNext()){
+            @SuppressLint("Range")
+            String time = cursor.getString(cursor.getColumnIndex(MySqliteOpenHelper.SQlite.time));
+            int year = Integer.parseInt(time.substring(0,4));
+            int month = Integer.parseInt(time.substring(4,6));
+            int day = Integer.parseInt(time.substring(6,8));
+            map.put(getSchemeCalendar(year, month, day, 0xFF40db25, "").toString(),
+                    getSchemeCalendar(year, month, day,0xFF40db25, ""));
+        }
+        calendarView.setSchemeDate(map);
+
+    }
+
+    private Calendar getSchemeCalendar(int year, int month, int day, int color, String text) {
+        Calendar calendar = new Calendar();
+        calendar.setYear(year);
+        calendar.setMonth(month);
+        calendar.setDay(day);
+        calendar.setSchemeColor(color);//如果单独标记颜色、则会使用这个颜色
+        calendar.setScheme(text);
+        return calendar;
+    }
+
 
     public void first_prepare(){
         // 获取一个当前的时间信息
@@ -283,6 +313,7 @@ public class MainActivity extends AppCompatActivity implements
             }
         }
     };
+
 
 
 }

@@ -218,6 +218,7 @@ public class add_list extends AppCompatActivity {
         DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
         String format = dateFormat.format(date);
         db = helper.getWritableDatabase();
+        //识别是添加还是编辑
         if(intent.getStringExtra("type").equals("0")) {
             db.execSQL("insert into todolist values(null,?,?,?,?,'start',?)"
                     , new String[]{curdata, title, content, imageBase64, format});
@@ -238,6 +239,7 @@ public class add_list extends AppCompatActivity {
 
     }
 
+    //取消键
     public void cancel(View view) {
         if(intent.getStringExtra("type").equals("0")){
             if (intent.getStringExtra("return").equals("1")){
