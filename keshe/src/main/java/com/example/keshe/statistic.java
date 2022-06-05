@@ -90,7 +90,7 @@ public class statistic extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.e("click", "onClick: ");
-                new DatePickerDialog(statistic.this, new DatePickerDialog.OnDateSetListener(){
+                DatePickerDialog dialog = new DatePickerDialog(statistic.this, new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker view, int year,
@@ -98,37 +98,37 @@ public class statistic extends AppCompatActivity {
                         monthOfYear += 1;
                         setTitle(year + "-" + monthOfYear + "-" + dayOfMonth);
                         String curdata = "";
-                        String data = year+"年";
-                        curdata += year+"";
-                        Log.e("data", "0"+monthOfYear);
-                        if (monthOfYear/10 == 0){
-                            data += "0"+monthOfYear+"月";
-                            curdata += "0"+monthOfYear;
+                        String data = year + "年";
+                        curdata += year + "";
+                        Log.e("data", "0" + monthOfYear);
+                        if (monthOfYear / 10 == 0) {
+                            data += "0" + monthOfYear + "月";
+                            curdata += "0" + monthOfYear;
+                        } else {
+                            data += monthOfYear + "月";
+                            curdata += monthOfYear + "";
                         }
-                        else {
-                            data += monthOfYear+"月";
-                            curdata += monthOfYear+"";
-                        }
-                        if (dayOfMonth/10 == 0){
-                            data += "0"+dayOfMonth+"日";
-                            curdata += "0"+dayOfMonth;
-                        }
-                        else {
-                            data += dayOfMonth+"日";
-                            curdata += dayOfMonth+"";
+                        if (dayOfMonth / 10 == 0) {
+                            data += "0" + dayOfMonth + "日";
+                            curdata += "0" + dayOfMonth;
+                        } else {
+                            data += dayOfMonth + "日";
+                            curdata += dayOfMonth + "";
                         }
                         da_behind = curdata;
                         show_data_behind.setText(data);
-                        count(da_before,da_behind);
+                        count(da_before, da_behind);
                     }
-                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+                dialog.getDatePicker().setMaxDate(new Date().getTime());
+                dialog.show();
 
             }
         });
         data_before.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(statistic.this, new DatePickerDialog.OnDateSetListener(){
+                DatePickerDialog dialog = new DatePickerDialog(statistic.this, new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker view, int year,
@@ -136,31 +136,30 @@ public class statistic extends AppCompatActivity {
                         monthOfYear += 1;
                         setTitle(year + "-" + monthOfYear + "-" + dayOfMonth);
                         String curdata = "";
-                        String data = year+"年";
-                        curdata += year+"";
-                        Log.e("data", "0"+monthOfYear);
-                        if (monthOfYear/10 == 0){
-                            data += "0"+monthOfYear+"月";
-                            curdata += "0"+monthOfYear;
+                        String data = year + "年";
+                        curdata += year + "";
+                        Log.e("data", "0" + monthOfYear);
+                        if (monthOfYear / 10 == 0) {
+                            data += "0" + monthOfYear + "月";
+                            curdata += "0" + monthOfYear;
+                        } else {
+                            data += monthOfYear + "月";
+                            curdata += monthOfYear + "";
                         }
-                        else {
-                            data += monthOfYear+"月";
-                            curdata += monthOfYear+"";
-                        }
-                        if (dayOfMonth/10 == 0){
-                            data += "0"+dayOfMonth+"日";
-                            curdata += "0"+dayOfMonth;
-                        }
-                        else {
-                            data += dayOfMonth+"日";
-                            curdata += dayOfMonth+"";
+                        if (dayOfMonth / 10 == 0) {
+                            data += "0" + dayOfMonth + "日";
+                            curdata += "0" + dayOfMonth;
+                        } else {
+                            data += dayOfMonth + "日";
+                            curdata += dayOfMonth + "";
                         }
                         show_data_before.setText(data);
                         da_before = curdata;
-                        count(da_before,da_behind);
+                        count(da_before, da_behind);
                     }
-                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH)-1, calendar.get(Calendar.DAY_OF_MONTH)).show();
-
+                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) - 1, calendar.get(Calendar.DAY_OF_MONTH));
+                dialog.getDatePicker().setMaxDate(new Date().getTime());
+                dialog.show();
             }
         });
     }

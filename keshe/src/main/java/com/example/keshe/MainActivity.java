@@ -68,14 +68,22 @@ public class MainActivity extends AppCompatActivity implements
 
         first_prepare();
         init_data();
+        setTitle("preface");
+    }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        init_data();
     }
 
     public void init_data() {
         Map<String, Calendar> map=new HashMap<>();
-        Cursor cursor = db.query(MySqliteOpenHelper.SQlite.TABLE_NAME, new String[]{"time"},null,null,null,null,null);
+        Cursor cursor = db.query(MySqliteOpenHelper.SQlite.TABLE_NAME, new String[]{"time"},null,null,"time",null,null);
         while (cursor.moveToNext()){
+
             @SuppressLint("Range")
             String time = cursor.getString(cursor.getColumnIndex(MySqliteOpenHelper.SQlite.time));
+            Log.e("TAG12", time+"");
             int year = Integer.parseInt(time.substring(0,4));
             int month = Integer.parseInt(time.substring(4,6));
             int day = Integer.parseInt(time.substring(6,8));

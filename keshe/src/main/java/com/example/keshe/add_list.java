@@ -91,7 +91,12 @@ public class add_list extends AppCompatActivity {
                 }
             }
             db.close();
-            textView.setText(intent.getStringExtra("time"));
+            // 将得到的时间转换为想要显示的形式
+            StringBuffer show_data = new StringBuffer(curdata);
+            show_data.insert(8,"日");
+            show_data.insert(6,"月");
+            show_data.insert(4,"年");
+            textView.setText(show_data);
             title_list.setText(intent.getStringExtra("title"));
             content_list.setText(intent.getStringExtra("content"));
         }
@@ -100,37 +105,37 @@ public class add_list extends AppCompatActivity {
         data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(add_list.this, new DatePickerDialog.OnDateSetListener(){
+                //                        setTitle(year + "-" + monthOfYear + "-" + dayOfMonth);
+                DatePickerDialog dialog = new DatePickerDialog(add_list.this, new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
                         monthOfYear += 1;
-                        setTitle(year + "-" + monthOfYear + "-" + dayOfMonth);
+//                        setTitle(year + "-" + monthOfYear + "-" + dayOfMonth);
                         curdata = "";
-                        String data = year+"";
-                        curdata += year+"";
-                        Log.e("data", "0"+monthOfYear);
-                        if (monthOfYear/10 == 0){
-                            data += "0"+monthOfYear+"月";
-                            curdata += "0"+monthOfYear;
+                        String data = year + "年";
+                        curdata += year + "";
+                        Log.e("data", "0" + monthOfYear);
+                        if (monthOfYear / 10 == 0) {
+                            data += "0" + monthOfYear + "月";
+                            curdata += "0" + monthOfYear;
+                        } else {
+                            data += monthOfYear + "月";
+                            curdata += monthOfYear + "";
                         }
-                        else {
-                            data += monthOfYear+"月";
-                            curdata += monthOfYear+"";
-                        }
-                        if (dayOfMonth/10 == 0){
-                            data += "0"+dayOfMonth+"日";
-                            curdata += "0"+dayOfMonth;
-                        }
-                        else {
-                            data += dayOfMonth+"日";
-                            curdata += dayOfMonth+"";
+                        if (dayOfMonth / 10 == 0) {
+                            data += "0" + dayOfMonth + "日";
+                            curdata += "0" + dayOfMonth;
+                        } else {
+                            data += dayOfMonth + "日";
+                            curdata += dayOfMonth + "";
                         }
                         textView.setText(data);
                     }
-                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
-
+                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+                dialog.getDatePicker().setMaxDate(new Date().getTime());
+                dialog.show();
             }
         });
         camera = findViewById(R.id.camera);
@@ -227,8 +232,6 @@ public class add_list extends AppCompatActivity {
                 startActivity(new Intent(this, show_list.class));
             }else {
             startActivity(new Intent(this, MainActivity.class));}
-//            MainActivity mainActivity = new MainActivity();
-//            mainActivity.init_data();
             finish();
         }else if(intent.getStringExtra("type").equals("1")){
             Log.e("title", title+"");
