@@ -45,7 +45,7 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
 
         public static final String image = "image"; //图片
 
-        public static final String state = "state";//状态 1为完成 2为延期
+        public static final String state = "state";//状态：创建 完成 延期
 
         //创建表格使用的SQL语句
         public static final String CREATE_TABLE = "create table " + TABLE_NAME + " ( " + ID + " integer primary key autoincrement,"  + time + " text ,"  + title + " text ," + content + " text ,"+ image + " text ,"+ state +" text ,"+ now_time +" text "+")";

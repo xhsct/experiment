@@ -96,7 +96,6 @@ public class statistic extends AppCompatActivity {
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
                         monthOfYear += 1;
-                        setTitle(year + "-" + monthOfYear + "-" + dayOfMonth);
                         String curdata = "";
                         String data = year + "年";
                         curdata += year + "";
@@ -134,7 +133,6 @@ public class statistic extends AppCompatActivity {
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
                         monthOfYear += 1;
-                        setTitle(year + "-" + monthOfYear + "-" + dayOfMonth);
                         String curdata = "";
                         String data = year + "年";
                         curdata += year + "";
