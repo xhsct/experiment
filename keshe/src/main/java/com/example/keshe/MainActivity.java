@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("daa", new Date().getTime()+"");
         // 系统自建
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

@@ -26,9 +26,9 @@
 
     <TextView
         android:id="@+id/cur_data"
+        android:textAlignment="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="textStart"
         android:textSize="30dp"/>
     <ListView
         android:id="@+id/main_lv"
