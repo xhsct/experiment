@@ -162,12 +162,13 @@ public class statistic extends AppCompatActivity {
         });
     }
 
+    // 对柱状图进行初始设置
     private void initBarChart(int start,int done,int postpone) {
         barChart = findViewById(R.id.bar_chart1);
         barChart.getDescription().setEnabled(false); // 不显示描述
         barChart.setExtraOffsets(20, 10, 20, 5); // 设置饼图的偏移量，类似于内边距 ，设置视图窗口大小
         setAxis(); // 设置坐标轴
-        setLegend();
+        setLegend(); // 设置图样
         setData(start,done,postpone);  // 设置数据
     }
 

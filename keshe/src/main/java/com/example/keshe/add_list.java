@@ -255,8 +255,9 @@ public class add_list extends AppCompatActivity {
         }
         else if (intent.getStringExtra("type").equals("1")){
             startActivity(new Intent(this,show_list.class));
+            finish();
         }
-        finish();
+
 
     }
 }

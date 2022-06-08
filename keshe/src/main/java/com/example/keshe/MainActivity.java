@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements
             select += "0"+calendar.getMonth();
         }
         else {
-            select_data += Integer.toString(calendar.getMonth())+"-";
+            select_data += calendar.getMonth()+"-";
             select += Integer.toString(calendar.getMonth());
         }
         if (calendar.getDay()/10==0){

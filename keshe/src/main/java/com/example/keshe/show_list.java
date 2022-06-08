@@ -42,8 +42,8 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
     List<list> list = new ArrayList<>();
     //定义一个数据库的对象
     SQLiteDatabase db;
-    ImageButton delete;
 
+    // 多选项
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -85,6 +85,7 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
         listView.setAdapter(adapter);
         //给ListView设置监听事件
         listView.setOnItemClickListener(this);
+        //获取所有信息
         select();
     }
     /**
@@ -252,6 +253,7 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
         //再加载数据库的数据
         //这里查询所有的数据，只需要一个表名就可以了,后面的条件可以不写，获得的是一个结果集
         String time = "time";
+        // 通过时间进行排序
         Cursor cursor = db.query(MySqliteOpenHelper.SQlite.TABLE_NAME, null, null, null, null, null, time);
         //结果集指向的表头前面.moveToNext()来指向下一个结果
         while (cursor.moveToNext()) {
