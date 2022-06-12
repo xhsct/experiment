@@ -67,6 +67,7 @@ public class statistic extends AppCompatActivity {
         db = helper.getReadableDatabase();
         Date date = new Date(System.currentTimeMillis());
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        // 把日期显示在统计页面，以某年某月某日的形式
         da_behind = dateFormat.format(date);
         StringBuffer show_behind = new StringBuffer(da_behind);
         show_behind.insert(8,"日");
@@ -84,6 +85,7 @@ public class statistic extends AppCompatActivity {
         show_data_behind = findViewById(R.id.show_data_behind);
         show_data_before.setText(show_before);
         show_data_behind.setText(show_behind);
+        // 一开始对柱状图和饼状图进行初始定
         count(da_before,da_behind);
         calendar = Calendar.getInstance();
         data_behind.setOnClickListener(new View.OnClickListener() {
@@ -160,6 +162,36 @@ public class statistic extends AppCompatActivity {
                 dialog.show();
             }
         });
+    }
+
+
+    // 分别得到三种状态的数量，并且对图进行改变
+    @SuppressLint("Range")
+    private void count(String data_before,String data_behind) {
+        start = 0;
+        done = 0;
+        postpone = 0;
+        Cursor cursor = db.query(MySqliteOpenHelper.SQlite.TABLE_NAME, null, null, null, null, null, null);
+        while (cursor.moveToNext()) {
+            String time = cursor.getString(cursor.getColumnIndex(MySqliteOpenHelper.SQlite.time));
+//            Log.d("TAG", (time.compareTo(data_before) == 1)+"");
+            String state = cursor.getString(cursor.getColumnIndex(MySqliteOpenHelper.SQlite.state));
+            if (Integer.parseInt(data_before)<=Integer.parseInt(time) && Integer.parseInt(time)<=Integer.parseInt(data_behind)){
+                Log.d("TAG", state+"");
+                if (state.equals("start")){
+                    start += 1;
+                }else if(state.equals("done")){
+                    done += 1;
+                }else if(state.equals("postpone")){
+                    postpone += 1;
+                }
+            }
+        }
+//        Log.d("TAG", start+""+done+""+postpone);
+        // 初始化柱状图
+        initBarChart(start,done,postpone);
+        // 初始化饼图
+        initPieChart(start,done,postpone);
     }
 
     // 对柱状图进行初始设置
@@ -286,34 +318,6 @@ public class statistic extends AppCompatActivity {
         yAxis_left.setTextSize(10f);// 设置y轴的标签大小
     }
 
-    private void count(String data_before,String data_behind) {
-        start = 0;
-        done = 0;
-        postpone = 0;
-        Cursor cursor = db.query(MySqliteOpenHelper.SQlite.TABLE_NAME, null, null, null, null, null, null);
-        while (cursor.moveToNext()) {
-            @SuppressLint("Range")
-            String time = cursor.getString(cursor.getColumnIndex(MySqliteOpenHelper.SQlite.time));
-//            Log.d("TAG", (time.compareTo(data_before) == 1)+"");
-            @SuppressLint("Range")
-            String state = cursor.getString(cursor.getColumnIndex(MySqliteOpenHelper.SQlite.state));
-            if (Integer.parseInt(data_before)<=Integer.parseInt(time) && Integer.parseInt(time)<=Integer.parseInt(data_behind)){
-                Log.d("TAG", state+"");
-                if (state.equals("start")){
-                    start += 1;
-                }else if(state.equals("done")){
-                    done += 1;
-                }else if(state.equals("postpone")){
-                    postpone += 1;
-                }
-            }
-        }
-//        Log.d("TAG", start+""+done+""+postpone);
-        initBarChart(start,done,postpone);
-        // 初始化饼图
-        initPieChart(start,done,postpone);
-    }
-
     private void initPieChart(int start,int done,int postpone) {
         pieChart = findViewById(R.id.pie_chart);
         pieChart.clear();
@@ -373,6 +377,8 @@ public class statistic extends AppCompatActivity {
         legend.setYOffset(5); // 设置图例在垂直方向的偏移量
     }
 
+
+    // 上面的复选条件
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

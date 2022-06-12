@@ -106,6 +106,7 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
         public long getItemId(int position) {
             return position;
         }
+
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             //定义ViewHolder对象
@@ -121,6 +122,7 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
             //往控件上放置数据
             list work = list.get(position);//如果不是String类型的数据会报错ResourceNotFound
             holder.title.setText(work.title + "");
+            //让他显示带有年月日的日期
             StringBuffer show_data = new StringBuffer(work.time);
             show_data.insert(8,"日");
             show_data.insert(6,"月");
@@ -133,6 +135,7 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
             Date date = new Date(System.currentTimeMillis());
             DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
             String format = dateFormat.format(date);
+            // 一开始就进行判断，如果事件超过两天，且没有完成那么状态就变为了延期，且背景色变红
             if (Integer.parseInt(format)-Integer.parseInt(work.time)>2 && !holder.ifdone.isChecked()){
                 db.execSQL("update todolist set state = ? where id = ?"
                         , new String[]{"postpone",work.id+""});
@@ -140,6 +143,7 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
             }else {
                 holder.set_background.setBackgroundColor(Color.rgb(1,87,190));
             }
+            // 删除某条任务
             holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -153,10 +157,12 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
                     adapter.notifyDataSetChanged();
                 }
             });
+            // 长按进入编辑页面
             holder.title.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
                     Intent intent = new Intent(show_list.this,add_list.class);
+                    // 传输要展示的数据以及最主要的类型
                     intent.putExtra("type","1");
                     intent.putExtra("content",work.content);
                     intent.putExtra("id",work.id+"");
@@ -174,6 +180,7 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     if (holder.ifdone.isChecked()){
                         ColorDrawable colorDrawable = (ColorDrawable)holder.set_background.getBackground();
+                        // 如果这个时候背景是红色，意味着延期，点击勾选后，背景色会变成蓝色
                         if (colorDrawable.getColor() == Color.rgb(190,0,80)){
                             holder.set_background.setBackgroundColor(Color.rgb(1,87,190));
                         }
@@ -188,6 +195,7 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
                         Date date = new Date(System.currentTimeMillis());
                         DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
                         String format = dateFormat.format(date);
+                        // 如果这个时候将一个延期的完成之后，将它取消，这个时候状态会变成postpone
                         if (Integer.parseInt(format)-Integer.parseInt(work.time)>2){
                             db.execSQL("update todolist set state = ? where id = ?"
                                     , new String[]{"postpone",work.id+""});
@@ -199,6 +207,7 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
             holder.time.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    // 点击事件，如果有图片和内容则会显示，
                     if (holder.linear_text.getVisibility() == View.VISIBLE){
                         holder.linear_text.setVisibility(View.GONE);
                     }

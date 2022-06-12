@@ -13,7 +13,6 @@ public class MySqliteOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-
         //创建一个表
         sqLiteDatabase.execSQL(SQlite.CREATE_TABLE);
 
