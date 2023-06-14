@@ -121,7 +121,7 @@ public class show_list extends AppCompatActivity implements AdapterView.OnItemCl
             }
             //往控件上放置数据
             list work = list.get(position);//如果不是String类型的数据会报错ResourceNotFound
-            holder.title.setText(work.title + "");
+            holder.title.setText(work.title);
             //让他显示带有年月日的日期
             StringBuffer show_data = new StringBuffer(work.time);
             show_data.insert(8,"日");

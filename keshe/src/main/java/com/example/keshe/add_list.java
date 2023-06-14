@@ -143,6 +143,7 @@ public class add_list extends AppCompatActivity {
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // 检查是否已经获取拍照权限
                 if (ContextCompat.checkSelfPermission(add_list.this, Manifest.permission.CAMERA )== PackageManager.PERMISSION_GRANTED){
                     //真正去拍照
                     toTake();
